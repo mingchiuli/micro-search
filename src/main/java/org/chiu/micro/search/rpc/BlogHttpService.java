@@ -6,6 +6,6 @@ import org.springframework.web.service.annotation.GetExchange;
 
 public interface BlogHttpService {
 
-    @GetExchange("/{blogId}")
+    @GetExchange("/blog/{blogId}")
     BlogEntityDto findById(@PathVariable Long blogId);
 }

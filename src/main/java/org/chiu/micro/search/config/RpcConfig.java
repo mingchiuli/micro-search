@@ -21,7 +21,7 @@ public class RpcConfig {
         requestFactory.setReadTimeout(Duration.ofSeconds(10));
 
         RestClient client = RestClient.builder()
-                .baseUrl("http://micro-blog:8081")
+                .baseUrl("http://micro-blog:8081/inner")
                 .requestFactory(requestFactory)
                 .build();
 
