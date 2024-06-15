@@ -1,7 +1,7 @@
 package org.chiu.micro.search.mq.handler;
 
 import org.chiu.micro.search.dto.BlogEntityDto;
-import org.chiu.micro.search.rpc.BlogHttpService;
+import org.chiu.micro.search.rpc.wrapper.BlogHttpServiceWrapper;
 import org.chiu.micro.search.constant.BlogOperateEnum;
 import org.chiu.micro.search.document.BlogDocument;
 
@@ -19,9 +19,9 @@ public final class CreateBlogIndexHandler extends BlogIndexSupport {
     private final ElasticsearchTemplate elasticsearchTemplate;
 
     public CreateBlogIndexHandler(StringRedisTemplate redisTemplate,
-                                  BlogHttpService blogHttpService,
+                                  BlogHttpServiceWrapper blogHttpServiceWrapper,
                                   ElasticsearchTemplate elasticsearchTemplate) {
-        super(redisTemplate, blogHttpService);
+        super(redisTemplate, blogHttpServiceWrapper);
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 

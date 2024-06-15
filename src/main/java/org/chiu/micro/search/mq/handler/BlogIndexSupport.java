@@ -3,7 +3,7 @@ package org.chiu.micro.search.mq.handler;
 
 import org.chiu.micro.search.dto.BlogEntityDto;
 import org.chiu.micro.search.lang.Const;
-import org.chiu.micro.search.rpc.BlogHttpService;
+import org.chiu.micro.search.rpc.wrapper.BlogHttpServiceWrapper;
 import org.chiu.micro.search.constant.BlogOperateEnum;
 import org.chiu.micro.search.constant.BlogOperateMessage;
 
@@ -23,12 +23,12 @@ public abstract sealed class BlogIndexSupport permits
 
     protected final StringRedisTemplate redisTemplate;
 
-    protected final BlogHttpService blogHttpService;
+    protected final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
     protected BlogIndexSupport(StringRedisTemplate redisTemplate,
-                               BlogHttpService blogHttpService) {
+                               BlogHttpServiceWrapper blogHttpServiceWrapper) {
         this.redisTemplate = redisTemplate;
-        this.blogHttpService = blogHttpService;
+        this.blogHttpServiceWrapper = blogHttpServiceWrapper;
     }
 
     public abstract boolean supports(BlogOperateEnum blogOperateEnum);
@@ -41,7 +41,7 @@ public abstract sealed class BlogIndexSupport permits
         if (Boolean.TRUE.equals(redisTemplate.hasKey(Const.CONSUME_MONITOR.getInfo()  + createUUID))) {
             try {
                 Long blogId = message.getBlogId();
-                BlogEntityDto blogEntity = blogHttpService.findById(blogId);
+                BlogEntityDto blogEntity = blogHttpServiceWrapper.findById(blogId);
 
                 elasticSearchProcess(blogEntity);
                 //手动签收消息

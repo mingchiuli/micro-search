@@ -6,7 +6,7 @@ import org.chiu.micro.search.document.BlogDocument;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
-import org.chiu.micro.search.rpc.BlogHttpService;
+import org.chiu.micro.search.rpc.wrapper.BlogHttpServiceWrapper;
 
 
 /**
@@ -19,9 +19,9 @@ public final class RemoveBlogIndexHandler extends BlogIndexSupport {
 
 
     public RemoveBlogIndexHandler(StringRedisTemplate redisTemplate,
-                                  BlogHttpService blogHttpService,
+                                  BlogHttpServiceWrapper blogHttpServiceWrapper,
                                   ElasticsearchTemplate elasticsearchTemplate) {
-        super(redisTemplate, blogHttpService);
+        super(redisTemplate, blogHttpServiceWrapper);
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
