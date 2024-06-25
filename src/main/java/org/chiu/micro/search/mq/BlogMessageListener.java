@@ -22,9 +22,9 @@ public class BlogMessageListener {
     private final List<BlogIndexSupport> elasticsearchHandlers;
 
     @RabbitListener(queues = ElasticSearchRabbitConfig.ES_QUEUE,
-            concurrency = "10",
-            messageConverter = "jsonMessageConverter",
-            executor = "mqExecutor")
+                    concurrency = "10",
+                    messageConverter = "jsonMessageConverter",
+                    executor = "mqExecutor")
     public void handler(BlogOperateMessage message, Channel channel, Message msg) {
         for (BlogIndexSupport handler : elasticsearchHandlers) {
             if (handler.supports(message.getTypeEnum())) {
