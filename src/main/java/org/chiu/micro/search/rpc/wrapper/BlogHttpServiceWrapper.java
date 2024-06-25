@@ -6,7 +6,7 @@ import org.chiu.micro.search.exception.MissException;
 import org.chiu.micro.search.lang.Result;
 import org.chiu.micro.search.rpc.BlogHttpService;
 
-import static org.chiu.micro.search.lang.ExceptionMessage.*;
+import static org.chiu.micro.search.lang.ExceptionMessage.NO_FOUND;
 
 import lombok.RequiredArgsConstructor;
 
