@@ -6,8 +6,6 @@ import org.chiu.micro.search.exception.MissException;
 import org.chiu.micro.search.lang.Result;
 import org.chiu.micro.search.rpc.BlogHttpService;
 
-import static org.chiu.micro.search.lang.ExceptionMessage.NO_FOUND;
-
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -19,7 +17,7 @@ public class BlogHttpServiceWrapper {
     public BlogEntityDto findById(Long blogId) {
         Result<BlogEntityDto> result = blogHttpService.findById(blogId);
         if (result.getCode() != 200) {
-            throw new MissException(NO_FOUND.getMsg());
+            throw new MissException(result.getMsg());
         }
         return result.getData();
     }
