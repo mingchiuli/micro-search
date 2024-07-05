@@ -2,7 +2,6 @@ package org.chiu.micro.search.mq.handler;
 
 
 import org.chiu.micro.search.dto.BlogEntityDto;
-import org.chiu.micro.search.lang.Const;
 import org.chiu.micro.search.rpc.wrapper.BlogHttpServiceWrapper;
 
 import java.util.Objects;
@@ -15,7 +14,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.amqp.core.Message;
-import org.springframework.amqp.rabbit.connection.PublisherCallbackChannel;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Slf4j
@@ -39,30 +37,25 @@ public abstract sealed class BlogIndexSupport permits
 
     @SneakyThrows
     public void handle(BlogOperateMessage message, Channel channel, Message msg) {
-        String createUUID = msg.getMessageProperties().getHeader(PublisherCallbackChannel.RETURNED_MESSAGE_CORRELATION_KEY);
         long deliveryTag = msg.getMessageProperties().getDeliveryTag();
-        if (Boolean.TRUE.equals(redisTemplate.hasKey(Const.CONSUME_MONITOR.getInfo()  + createUUID))) {
-            try {
-                Long blogId = message.getBlogId();
-                BlogEntityDto blogEntity;
-                if (Objects.equals(message.getTypeEnum(), BlogOperateEnum.REMOVE)) {
-                    blogEntity = new BlogEntityDto();
-                    blogEntity.setId(blogId);
-                } else {
-                    blogEntity = blogHttpServiceWrapper.findById(blogId);
-                }
-
-                elasticSearchProcess(blogEntity);
-                //手动签收消息
-                //false代表不是批量签收模式
-                channel.basicAck(deliveryTag, false);
-                redisTemplate.delete(Const.CONSUME_MONITOR.getInfo() + createUUID);
-            } catch (Exception e) {
-                log.error("consume failure", e);
-                channel.basicNack(deliveryTag, false, true);
+        try {
+            Long blogId = message.getBlogId();
+            BlogEntityDto blogEntity;
+            if (Objects.equals(message.getTypeEnum(), BlogOperateEnum.REMOVE)) {
+                blogEntity = new BlogEntityDto();
+                blogEntity.setId(blogId);
+            } else {
+                blogEntity = blogHttpServiceWrapper.findById(blogId);
             }
-        } else {
-            channel.basicNack(deliveryTag, false, false);
+
+            elasticSearchProcess(blogEntity);
+            //手动签收消息
+            //false代表不是批量签收模式
+            channel.basicAck(deliveryTag, false);
+        } catch (Exception e) {
+            log.error("consume failure", e);
+            channel.basicNack(deliveryTag, false, true);
         }
     }
+
 }
