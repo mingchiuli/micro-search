@@ -14,7 +14,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.amqp.core.Message;
-import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Slf4j
 public abstract sealed class BlogIndexSupport permits
@@ -22,13 +21,9 @@ public abstract sealed class BlogIndexSupport permits
         RemoveBlogIndexHandler,
         UpdateBlogIndexHandler {
 
-    protected final StringRedisTemplate redisTemplate;
-
     protected final BlogHttpServiceWrapper blogHttpServiceWrapper;
 
-    protected BlogIndexSupport(StringRedisTemplate redisTemplate,
-                               BlogHttpServiceWrapper blogHttpServiceWrapper) {
-        this.redisTemplate = redisTemplate;
+    protected BlogIndexSupport(BlogHttpServiceWrapper blogHttpServiceWrapper) {
         this.blogHttpServiceWrapper = blogHttpServiceWrapper;
     }
 

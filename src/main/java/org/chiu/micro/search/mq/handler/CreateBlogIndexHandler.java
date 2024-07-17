@@ -6,7 +6,6 @@ import org.chiu.micro.search.constant.BlogOperateEnum;
 import org.chiu.micro.search.document.BlogDocument;
 
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.ZoneId;
@@ -18,10 +17,9 @@ public final class CreateBlogIndexHandler extends BlogIndexSupport {
 
     private final ElasticsearchTemplate elasticsearchTemplate;
 
-    public CreateBlogIndexHandler(StringRedisTemplate redisTemplate,
-                                  BlogHttpServiceWrapper blogHttpServiceWrapper,
+    public CreateBlogIndexHandler(BlogHttpServiceWrapper blogHttpServiceWrapper,
                                   ElasticsearchTemplate elasticsearchTemplate) {
-        super(redisTemplate, blogHttpServiceWrapper);
+        super(blogHttpServiceWrapper);
         this.elasticsearchTemplate = elasticsearchTemplate;
     }
 
