@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MicroSearchApplication {
 
 	public static void main(String[] args) {
-				TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
 				SpringApplication.run(MicroSearchApplication.class, args);
 		}
 
