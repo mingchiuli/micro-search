@@ -1,7 +1,6 @@
 package org.chiu.micro.search.mq;
 
 import org.chiu.micro.search.constant.BlogOperateMessage;
-import org.chiu.micro.search.config.ElasticSearchRabbitConfig;
 import com.rabbitmq.client.Channel;
 import lombok.RequiredArgsConstructor;
 import org.chiu.micro.search.mq.handler.BlogIndexSupport;
@@ -21,7 +20,9 @@ public class BlogMessageListener {
 
     private final List<BlogIndexSupport> elasticsearchHandlers;
 
-    @RabbitListener(queues = ElasticSearchRabbitConfig.ES_QUEUE,
+    private static final String ES_QUEUE = "blog.change.queue.es";
+
+    @RabbitListener(queues = ES_QUEUE,
                     concurrency = "10",
                     messageConverter = "jsonMessageConverter",
                     executor = "mqExecutor")
